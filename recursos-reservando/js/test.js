@@ -12,21 +12,12 @@ var restaurantEjemplo = listado.buscarRestaurante(1);
 
 describe("reservarHorario", function () {
 
-// Cuando se reserva un horario de un restaurant, el horario correspondiente se elimina del arreglo.
+    it("cuando se reserva un horario el mismo se debe eliminar del arreglo horarios", function () {  
 
-    it("reservarHorario cualquiera", function () {  
-
-        var horarioDeReserva = '13:00'
-        restaurantEjemplo.reservarHorario(horarioDeReserva);
-        var horariosConReserva = restaurantEjemplo.horarios;
-
-        for (var i = 0; i < restaurantEjemplo.horarios.length; i++) {
-            if (restaurantEjemplo.horarios[i] === horarioDeReserva) {
-                var resultado = true
-            }
-            return resultado;
-        }
+        restaurantEjemplo.reservarHorario('13:00');
+        var resultado = restaurantEjemplo.horarios.includes('13:00');
         var esperado = false;
+
         expect(resultado).to.equal(esperado);
     });
 
