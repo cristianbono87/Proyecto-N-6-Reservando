@@ -10,41 +10,26 @@ var assert = chai.assert;
 var restaurantEjemplo = listado.buscarRestaurante(1);
 //!---------------------------------------------------
 
-// var expect = chai.expect; // se agrega la función al programa
-
-// expect(“casa”).to.be.a('string'); //se espera que “casa” sea un string
-
-// expect([]).to.be.an(‘array’); //se espera que [] sea un arreglo
-
-// expect(miValor).to.equal(3); //equal compara que miValor sea igual a 3
-
-// expect({ a: 1 }).to.eql({ a: 1 }).but.not.equal({ a: 1 }); //eql compara cada valor del objeto. Para objetos usamos eql en vez de equal.
-
 describe("reservarHorario", function () {
 
     it("cuando se reserva un horario el mismo se debe eliminar del arreglo horarios", function () {  
 
-        // restaurantEjemplo.reservarHorario('13:00');
-        // var resultado = restaurantEjemplo.horarios.includes('13:00');
-        // var esperado = false;
-
-        // expect(resultado).to.equal(esperado);
+        restaurantEjemplo.reservarHorario('13:00');
+        expect(restaurantEjemplo.horarios).to.not.includes('13:00');
     });
 
     it("Cuando se reserva un horario que el restaurant no posee, el arreglo se mantiene igual", function () {
 
         var resultado = restaurantEjemplo.horarios.length;
         restaurantEjemplo.reservarHorario('45'); //valor que se sabe no se encuentra en el arreglo
-        var esperado = restaurantEjemplo.horarios.length;
-        // expect(resultado).to.equal(esperado);
+        expect(resultado).to.equal(restaurantEjemplo.horarios.length);
     });
 
     it("Cuando se reserva un horario pasando como parámetro un espacio vacío, el arreglo debe mantenerse igual", function () {
 
         var resultado = restaurantEjemplo.horarios.length;
         restaurantEjemplo.reservarHorario();
-        var esperado = restaurantEjemplo.horarios.length;
-        // expect(resultado).to.equal(esperado);
+        expect(resultado).to.equal(restaurantEjemplo.horarios.length);
     });
 });
 
@@ -72,31 +57,27 @@ describe("obtener puntuación", function () {
 describe("calificar", function () {
 
     it("Comprobar que dada una calificacion valida, la misma se agrega al array", function () {
-        var cantCalificaciones = restaurantEjemplo.calificaciones.length;
+        var antesDeCalificar = restaurantEjemplo.calificaciones.length;
         restaurantEjemplo.calificar(1);
-        var resultado = restaurantEjemplo.calificaciones.length;
-        var esperado = cantCalificaciones + 1;
+        var despuesDeCalificar = restaurantEjemplo.calificaciones.length;
+        expect(despuesDeCalificar).to.be.equal(antesDeCalificar + 1);
     });
 
-//comprobar que dada una nueva calificación menor a 0 o mayor a 10 la misma no sea agregada al array de califecaciones
-
-    it("comprobar que calificacion no valida no se agregue", function () {
-        var cantCalificaciones = restaurantEjemplo.calificaciones.length;
+    it("Comprobar que dada una nueva calificación menor a 0 o mayor a 10 la misma no sea agregada", function () {
+        var antesDeCalificar = restaurantEjemplo.calificaciones.length;
         restaurantEjemplo.calificar(-1);
         restaurantEjemplo.calificar(11);
-        var resultado = restaurantEjemplo.calificaciones.length;
-        var esperado = cantCalificaciones;
+        var despuesDeCalificar = restaurantEjemplo.calificaciones.length;
+        expect(antesDeCalificar).to.equal(despuesDeCalificar);
     });
 
-//comprobar que dada una nueva calificación de valores en string o NaN la misma no sea agregada al array de calificaciones
-
-    it("comprobar que calificacion no valida no se agregue", function () {
-        var cantCalificaciones = restaurantEjemplo.calificaciones.length;
+    it("Comprobar que dada una nueva calificación de valores en string o NaN la misma no sea agregada", function () {
+        var antesDeCalificar = restaurantEjemplo.calificaciones.length;
         restaurantEjemplo.calificar('hola');
         restaurantEjemplo.calificar(NaN);
         restaurantEjemplo.calificar(true);
-        var resultado = restaurantEjemplo.calificaciones.length;
-        var esperado = cantCalificaciones;
+        var despuesDeCalificar = restaurantEjemplo.calificaciones.length;
+        expect(antesDeCalificar).to.equal(despuesDeCalificar);
     });
 
 });
@@ -105,20 +86,13 @@ describe("calificar", function () {
 
 describe("buscar restaurante", function () {
 
-    //comprobar que la funcion buscarRestaurante nos devuelva el restaurant correspondiente al id indicado
-
-    it("comprobar que nos devuelva el objeto restaurant correcto segun id", function () {
-        var restaurantIndicado = [1, "TAO Uptown", "Asiática", "Nueva York", ["13:00", "15:30", "18:00"], "../img/asiatica1.jpg", [6, 7, 9, 10, 5]];
-        restaurantEjemplo.calificar(1);
-        var resultado = listado.buscarRestaurante(1); //el restaurant TAO Uptown corresponde al id conocido '1'
-        var esperado = restaurantIndicado;
+    it("Comprobar que la funcion buscarRestaurante nos devuelva el restaurant correspondiente al id indicado", function () {
+        //el restaurant TAO Uptown corresponde al id conocido '1'
+        expect(listado.buscarRestaurante(1)).to.includes({nombre: "TAO Uptown"});
     });
 
-    //comprobar que dado un id que no se encuentra disponible devuelva un mensaje de que no se encuentra disponible
-
-    it("comprobar ausencia de restaurant segun id", function () {
-        var resultado = listado.buscarRestaurante(-1);
-        var esperado = "No se ha encontrado ningún restaurant";
+    it("Comprobar que dado un id que no se encuentra disponible devuelva un mensaje de que no se encuentra disponible", function () {
+        expect(listado.buscarRestaurante(-1)).to.equal("No se ha encontrado ningún restaurant");
     });
 
 });
@@ -127,43 +101,43 @@ describe("buscar restaurante", function () {
 
 describe("obtener restaurante", function () {
 
-    //comprobar que la funcion obtenerRestaurante filtra correctamente
-
     it("comprobar que la funcion responde correctamente a un filtro por rubro", function () {
-        var restaurantes = this.listadoDeRestaurantes;
-        for (var i = 0; i < restaurantes.length; i++) {
-            if (restaurantes.rubro[i] === "Asiática") {
-                var contador =+ 1
-                console.log(contador)
-            }
-            return contador;
-        };
-        var resultado = contador;
-        var esperado = (restaurantes.filter(restaurant => restaurant.rubro == "Asiática").length);
-        expect(resultado).to.equal(esperado);
+        var restauranteFiltrado = listado.restaurantes.filter(function(elemento){
+            return elemento.rubro == "Asiática";
+        });
+
+        var filtroRubro = "Asiática";
+        var filtroCiudad = null;
+        var filtroHorario = null;
+        var obtenerRestaurant = listado.obtenerRestaurantes(filtroRubro, filtroCiudad, filtroHorario)
+        
+        expect(restauranteFiltrado).to.eql(obtenerRestaurant);
+    });
+
+    it("comprobar que la funcion responde correctamente a un filtro por ciudad", function () {
+        var restauranteFiltrado = listado.restaurantes.filter(function (elemento) {
+            return elemento.ubicacion == "Nueva York";
+        });
+
+        var filtroRubro = null;
+        var filtroCiudad = "Nueva York";
+        var filtroHorario = null;
+        var obtenerRestaurant = listado.obtenerRestaurantes(filtroRubro, filtroCiudad, filtroHorario)
+
+        expect(restauranteFiltrado).to.eql(obtenerRestaurant);
+    });
+
+    it("comprobar que la funcion responde correctamente a un filtro por horario", function () {
+        var restauranteFiltrado = listado.restaurantes.filter(function (elemento) {
+            return elemento.horarios.some(horario => horario == "13:00")
+        });
+
+        var filtroRubro = null;
+        var filtroCiudad = null;
+        var filtroHorario = "13:00";
+        var obtenerRestaurant = listado.obtenerRestaurantes(filtroRubro, filtroCiudad, filtroHorario)
+
+        expect(restauranteFiltrado).to.eql(obtenerRestaurant);
     });
 
 });
-
-//Testeá la función obtenerRestaurantes()
-// Testeá la función obtenerRestaurantes() para comprobar su funcionamiento.En este paso, podés elegir vos la pruebas que quieras hacer.
-
-//Función que recibe los filtros que llegan desde el HTML y filtra el arreglo de restaurantes.
-//Solo se filtra si el valor recibido es distinto de null.
-// Listado.prototype.obtenerRestaurantes = function (filtroRubro, filtroCiudad, filtroHorario) {
-//     var restaurantesFiltrados = this.restaurantes;
-//     if (filtroRubro !== null) {
-//         restaurantesFiltrados = restaurantesFiltrados.filter(restaurant => restaurant.rubro == filtroRubro);
-//     }
-
-//     if (filtroCiudad !== null) {
-//         restaurantesFiltrados = restaurantesFiltrados.filter(restaurant => restaurant.ubicacion == filtroCiudad);
-//     }
-
-//     if (filtroHorario !== null) {
-//         restaurantesFiltrados = restaurantesFiltrados.filter(function (res) {
-//             return res.horarios.some(horario => horario == filtroHorario);
-//         });
-//     }
-//     return restaurantesFiltrados;
-// }
