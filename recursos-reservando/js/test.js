@@ -10,42 +10,41 @@ var assert = chai.assert;
 var restaurantEjemplo = listado.buscarRestaurante(1);
 //!---------------------------------------------------
 
+// var expect = chai.expect; // se agrega la función al programa
+
+// expect(“casa”).to.be.a('string'); //se espera que “casa” sea un string
+
+// expect([]).to.be.an(‘array’); //se espera que [] sea un arreglo
+
+// expect(miValor).to.equal(3); //equal compara que miValor sea igual a 3
+
+// expect({ a: 1 }).to.eql({ a: 1 }).but.not.equal({ a: 1 }); //eql compara cada valor del objeto. Para objetos usamos eql en vez de equal.
+
 describe("reservarHorario", function () {
 
     it("cuando se reserva un horario el mismo se debe eliminar del arreglo horarios", function () {  
 
-        restaurantEjemplo.reservarHorario('13:00');
-        var resultado = restaurantEjemplo.horarios.includes('13:00');
-        var esperado = false;
+        // restaurantEjemplo.reservarHorario('13:00');
+        // var resultado = restaurantEjemplo.horarios.includes('13:00');
+        // var esperado = false;
 
-        expect(resultado).to.equal(esperado);
+        // expect(resultado).to.equal(esperado);
     });
 
-// Cuando se reserva un horario que el restaurant no posee, el arreglo se mantiene igual.
-    
-    it("reservar horario que no se encuentra disponible", function () {
+    it("Cuando se reserva un horario que el restaurant no posee, el arreglo se mantiene igual", function () {
 
-        var horarioDeReserva = '45'
-        var elementosAntesDeReserva = restaurantEjemplo.horarios.length;
-        restaurantEjemplo.reservarHorario(horarioDeReserva);
-        var elementosDespuesDeReserva = restaurantEjemplo.horarios.length;
-
-        var resultado = elementosAntesDeReserva;
-        var esperado = elementosDespuesDeReserva;
-        expect(resultado).to.equal(esperado);
+        var resultado = restaurantEjemplo.horarios.length;
+        restaurantEjemplo.reservarHorario('45'); //valor que se sabe no se encuentra en el arreglo
+        var esperado = restaurantEjemplo.horarios.length;
+        // expect(resultado).to.equal(esperado);
     });
 
-// Cuando se intenta reservar un horario pero no se le pasa ningún parámetro a la función, el arreglo se mantiene igual.
+    it("Cuando se reserva un horario pasando como parámetro un espacio vacío, el arreglo debe mantenerse igual", function () {
 
-    it("reservar horario que no se encuentra disponible", function () {
-
-        var elementosAntesDeReserva = restaurantEjemplo.horarios.length;
+        var resultado = restaurantEjemplo.horarios.length;
         restaurantEjemplo.reservarHorario();
-        var elementosDespuesDeReserva = restaurantEjemplo.horarios.length;
-
-        var resultado = elementosAntesDeReserva;
-        var esperado = elementosDespuesDeReserva;
-        expect(resultado).to.equal(esperado);
+        var esperado = restaurantEjemplo.horarios.length;
+        // expect(resultado).to.equal(esperado);
     });
 });
 
@@ -53,26 +52,18 @@ describe("reservarHorario", function () {
 
 describe("obtener puntuación", function () {
 
-// Dado un restaurant con determinadas calificaciones, la puntuación(que es el promedio de ellas) se calcula correctamente.
-
-    it("calcular promedio correctamente", function () {
+    it("Calcular promedio correctamente", function () {
 
         restaurantEjemplo.calificaciones = [10, 10]; //array con promedio conocido de valor 10
-
         var resultado = restaurantEjemplo.obtenerPuntuacion();
-        var esperado = 10;
-        expect(resultado).to.equal(esperado);
+        expect(resultado).to.equal(10);
     });
 
-// Dado un restaurant que no tiene ninguna calificación, la puntuación es igual a 0.
-
-    it("corroborar promedio '0'", function () {
+    it("Dado un restaurant sin calificaciones, la puntuación debe ser cero", function () {
 
         restaurantEjemplo.calificaciones = [];
-
         var resultado = restaurantEjemplo.obtenerPuntuacion();
-        var esperado = 0;
-        expect(resultado).to.equal(esperado);
+        expect(resultado).to.equal(0);
     });
 });
 
@@ -80,9 +71,7 @@ describe("obtener puntuación", function () {
 
 describe("calificar", function () {
 
-//comprobar que dada una nueva calificación entre 0 y 10 la misma sea agregada al array de califecaciones
-
-    it("comprobar que calificacion valida se agrega al array", function () {
+    it("Comprobar que dada una calificacion valida, la misma se agrega al array", function () {
         var cantCalificaciones = restaurantEjemplo.calificaciones.length;
         restaurantEjemplo.calificar(1);
         var resultado = restaurantEjemplo.calificaciones.length;
