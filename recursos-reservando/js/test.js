@@ -41,7 +41,7 @@ describe("obtener puntuación", function () {
 
         restaurantEjemplo.calificaciones = [10, 10]; //array con promedio conocido de valor 10
         var resultado = restaurantEjemplo.obtenerPuntuacion();
-        expect(resultado).to.equal(10);
+        expect(resultado).to.equal('10');
     });
 
     it("Dado un restaurant sin calificaciones, la puntuación debe ser cero", function () {

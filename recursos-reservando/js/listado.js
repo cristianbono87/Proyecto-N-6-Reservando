@@ -18,11 +18,10 @@ Listado.prototype.calificarRestaurant = function(id, calificacion) {
 
 //Dado un id, busca el objeto del listado que tiene ese id
 Listado.prototype.buscarRestaurante = function(id) {
-    for (var i = 0; i < this.restaurantes.length; i++) {
-        if (this.restaurantes[i].id === id) {
-            return this.restaurantes[i]
+    var restaurant = this.restaurantes.find(element => element.id === id);
+        if(restaurant){
+            return restaurant;
         }
-    }
     return "No se ha encontrado ningún restaurant";
 }
 
@@ -31,10 +30,9 @@ Listado.prototype.obtenerUbicaciones = function() {
     //Array donde se van a ir agregando las ciudades (van a estar repetidas)
     var ciudades = [];
     //Se recorre el array de restaurantes y se va agregando al array creado, todas las ubicaciones o ciudades encontradas
-    for (var i = 0; i < this.restaurantes.length; i++) {
-        ciudades.push(this.restaurantes[i].ubicacion);
-    }
-    //Se crea un nuevo array donde se van a agregar las ciudades pero sin repetirse
+    this.restaurantes.map(function(element){
+        ciudades.push(element.ubicacion);
+    })
     var ciudadesUnicas = eliminarRepetidos(ciudades);
     return ciudadesUnicas.sort();
 }
@@ -42,9 +40,9 @@ Listado.prototype.obtenerUbicaciones = function() {
 //Obtiene todos los rubros de los restaurantes sin repetidos. Su funcionamiento es similar a obtC()
 Listado.prototype.obtenerRubros = function() {
     var rubros = [];
-    for (var i = 0; i < this.restaurantes.length; i++) {
-        rubros.push(this.restaurantes[i].rubro);
-    }
+    this.restaurantes.map(function (element) {
+        rubros.push(element.rubro);
+    })
     var rubrosUnicos = eliminarRepetidos(rubros);
     return rubrosUnicos.sort();
 }
@@ -56,9 +54,9 @@ Listado.prototype.obtenerHorarios = function() {
     //En este array se van a cargar los arrays de horarios, que luego vamos convertir en un solo array
     var arrayDeHorarios = [];
     //Recorremos el array de restaurantes y vamos agregando todos los array de horarios
-    for (var i = 0; i < this.restaurantes.length; i++) {
-        arrayDeHorarios.push(this.restaurantes[i].horarios);
-    }
+    this.restaurantes.map(function (element) {
+        arrayDeHorarios.push(element.horarios);
+    })
 
     //En este arreglo vamos a poner todos los horarios, uno por uno
     var horariosUnicos = [];
