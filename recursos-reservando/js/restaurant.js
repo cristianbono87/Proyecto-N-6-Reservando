@@ -22,15 +22,21 @@ Restaurant.prototype.calificar = function(nuevaCalificacion) {
 
 Restaurant.prototype.obtenerPuntuacion = function() {
     if (this.calificaciones.length === 0) {
-        return 0;
-    } else {
-        var sumatoria = 0;
-        for (var i = 0; i < this.calificaciones.length; i++) {
-            sumatoria += this.calificaciones[i]
-        }
-        var promedio = sumatoria / this.calificaciones.length;
-        return Math.round(promedio * 10) / 10;
+            return 0;
+        } else {
+            return promedio(this.calificaciones);
     }
-
 }
 
+var sumatoria = function(array){
+    var suma = 0;
+    array.forEach(element => {
+        suma += element;
+    });
+    return suma;
+}
+
+var promedio = function(array){
+    var promedio = sumatoria(array)/array.length;
+    return promedio;
+}
