@@ -141,3 +141,27 @@ describe("obtener restaurante", function () {
     });
 
 });
+
+//!-----------------Test Guia 3: Funcionalidad de reserva-----------------------
+//?-----------------------------------------------------------------------------
+
+//Ejemplos de reserva
+var reserva1 = new Reserva(new Date(2018, 7, 24, 11, 00), 8, 350, "DES1")
+var reserva2 = new Reserva(new Date(2018, 7, 27, 14, 100), 2, 150, "DES200")
+
+describe("Precio de reserva",function(){
+
+    it("comprobar que el calculo del precio base se realice correctamente",function(){
+        var esperado = reserva1.precioPersona * reserva1.cantDePersonas;
+        var resultado = precioBaseReserva(reserva1.cantDePersonas);
+        expect(esperado).to.be.equal(resultado);
+    })
+
+    it("comprobar que el calculo del precio total se realice correctamente", function () {
+        //se usa para el calculo la reserva 1: Adicionales 
+        var precioBase = reserva1.cantDePersonas * reserva1.precioPersona;
+        var esperado = precioBase + (precioBase*0.1) - (precioBase*0.1) - (reserva1.precioPersona);
+        var resultado = Reserva.precioFinalReserva(reserva1.cantDePersonas, reserva1.codigoDescuento);
+        expect(esperado).to.be.equal(resultado);
+    })
+})
