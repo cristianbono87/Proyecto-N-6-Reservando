@@ -5,24 +5,54 @@ var Reserva = function (horario, cantDePersonas, precioPersona, codigoDescuento)
     this.codigoDescuento = codigoDescuento; //string
 };
 
-function precioBaseReserva(cantDePersonas){
-    var precio = cantDePersonas * this.precioPersona;
+function precioBaseReserva(Reserva){
+    var precio = Reserva.cantDePersonas * Reserva.precioPersona;
     return precio;
 };
 
-function precioDescuento(cantDePersonas, codigoDescuento){
-    var descuento = 0;
-    if(cantDePersonas >= 4 && cantDePersonas <= 6){
-        descuento = 0.05;
-    } if (cantDePersonas >= 7 && cantDePersonas <= 8) {
-        descuento = 0.1;
-    } if (cantDePersonas > 8){
-        descuento = 0.15;
-    }
-    return descuento;
-}
+//Esta funcion debe tener en cuenta el descuento por cantidad de personas y por cupon de descuento
+function precioDescuento(Reserva){
+    var descuento = {porcentaje:0,dinero:0,liberado:0}
 
-Reserva.prototype.precioFinalReserva = function(cantDePersonas){
-var precioFinal = precio + adicionales - (precio * precioDescuento(cantDePersonas,codigoDescuento));
+        switch (Reserva.codigoDescuento) {
+            case "DES15":
+                descuento.porcentaje = 0.15;
+                break;
+            case "DES200":
+                descuento.dinero = 200;
+                break;
+            case "DES1":
+                descuento.liberado = 1
+                break;
+            default:
+                break;
+        }
+        if(Reserva.cantDePersonas >= 4 && Reserva.cantDePersonas <= 6){
+            descuento.porcentaje += 0.05;
+        } if (Reserva.cantDePersonas >= 7 && Reserva.cantDePersonas <= 8) {
+            descuento.porcentaje += 0.1;
+        } if (Reserva.cantDePersonas > 8){
+            descuento.porcentaje += 0.15;
+        }
+    var precioDeDescuento = (descuento.porcentaje*precioBaseReserva(Reserva)) + (descuento.dinero)+ (descuento.liberado*Reserva.precioPersona);
+    return precioDeDescuento;
+};
+
+//Esta funcion debe tener en cuenta los adicionales por horario y por fin de semana
+function precioAdicionales(Reserva){
+    var recargo = 0;
+    if (Reserva.horario.getHours() >= 13 && Reserva.horario.getHours() <= 14){
+        recargo = 0.05;
+    } if (Reserva.horario.getHours() >= 20 && Reserva.horario.getHours() <= 21){
+        recargo = 0.05;
+    }console.log(recargo); if (Reserva.horario.getDay() == 5 || Reserva.horario.getDay() == 6 || Reserva.horario.getDay() == 0){
+        recargo += 0.1;
+    }console.log(recargo);
+    var precioRecargo = recargo*precioBaseReserva(Reserva);
+    return precioRecargo;
+};
+
+Reserva.prototype.precioFinalReserva = function(Reserva){
+var precioFinal = precioBaseReserva(Reserva) + precioAdicionales(Reserva) - precioDescuento(Reserva);
 return precioFinal;
-}
+};
